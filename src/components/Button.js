@@ -47,7 +47,9 @@ const Button = ({ text, setDisplay, display, equation, setEquation }) => {
       setDisplay(display + " - ");
       setEquation(equation + " - ");
     } else if (text === "=") {
+      // eslint-disable-next-line no-new-func
       setDisplay(Function(equation)());
+      // eslint-disable-next-line no-new-func
       setEquation(Function(equation)());
     } else {
       setDisplay(display === "0" ? text : display + text);
