@@ -1,25 +1,20 @@
 import React from "react";
 import "../App.css";
+import { evaluate } from 'mathjs';
 
 const Button = ({ text, setDisplay, display, equation, setEquation }) => {
   const handleClick = () => {
     if (display === "0" && "+-x÷%+/-.".includes(text)) {
-      // if the display is 0 and the button is an operator, don't add the operator
+      // If the display is 0 and the button is an operator, don't add the operator
       return;
     } else if (display === "0" && text !== "AC") {
       setDisplay(text);
       setEquation(text);
-    } else if (
-      "+-x÷%+/-.".includes(text) &&
-      "+-x÷%+/-.".includes(display[display.length - 1])
-    ) {
-      // if the last character is an operator, don't add another operator
+    } else if ("+-x÷%+/-.".includes(text) && "+-x÷%+/-.".includes(display[display.length - 1])) {
+      // If the last character is an operator, don't add another operator
       return;
-    } else if (
-      typeof parseInt(display) === "number" &&
-      typeof text === "number"
-    ) {
-      // if the last character is a number, don't add another number
+    } else if (!isNaN(parseInt(display)) && !isNaN(parseInt(text))) {
+      // If the last character is a number, don't add another number
       setDisplay(text);
       setEquation(text);
     } else if (text === "AC") {
@@ -29,8 +24,8 @@ const Button = ({ text, setDisplay, display, equation, setEquation }) => {
       setEquation(text);
       setDisplay(text);
     } else if (text === "+/-") {
-      setDisplay(display * -1);
-      setEquation(equation * -1);
+      setDisplay(-display);
+      setEquation(-equation);
     } else if (text === "%") {
       setDisplay(display / 100);
       setEquation(equation / 100);
@@ -47,9 +42,8 @@ const Button = ({ text, setDisplay, display, equation, setEquation }) => {
       setDisplay(display + " - ");
       setEquation(equation + " - ");
     } else if (text === "=") {
-     
-      setDisplay(equation);
-      setEquation(equation);
+      setDisplay(evaluate(equation));
+      setEquation(evaluate(equation));      
     } else {
       setDisplay(display === "0" ? text : display + text);
       setEquation(equation + text);
